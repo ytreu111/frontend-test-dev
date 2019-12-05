@@ -10,6 +10,11 @@
 
 #vs
 /.vscode
+
+#config 
+/config
+#script
+/script
 # production
 /build
 
