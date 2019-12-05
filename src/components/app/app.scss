@@ -1,0 +1,19 @@
+.app{
+    display: flex;
+    justify-content: center;
+
+    &__field{
+        display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap:5px;
+    padding: 10px;
+    border: 2px solid black;
+    box-sizing: border-box;
+    max-width: 660px;
+    background-color: gray;
+    perspective: 1000px;
+    min-width:649px;
+    min-height:649px;
+    }
+}
