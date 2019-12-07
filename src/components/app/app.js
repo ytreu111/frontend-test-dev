@@ -32,9 +32,14 @@ export default class App extends Component {
             openedCards: [],
             complitedCards: [],
             completed: false,
-            game: false
+            game: false,
+            opened: false,
+            time: 0
         };
     }
+
+    //КЛИК ПО КАРТЕ
+
     clickCard(number, index) {
         if (this.state.openedCards.length === 2) {
             setTimeout(() => {
@@ -50,22 +55,10 @@ export default class App extends Component {
             finiteCard[index].close = false;
             openedCards.push(card);
             this.setState({
-                finiteCard: finiteCard
+                finiteCard: finiteCard,
+                opened: true,
+                time: 0
             });
-            setTimeout(() => {
-                if (this.state.openedCards.length === 1) {
-                    this.setState(({ finiteCard }) => {
-                        let newArr = finiteCard;
-                        newArr[
-                            this.state.openedCards[0].index
-                        ].close = true;
-                        return {
-                            finiteCard: newArr,
-                            openedCards: []
-                        };
-                    });
-                }
-            }, 5000);
             if (this.state.openedCards.length === 2) {
                 setTimeout(() => {
                     this.check();
@@ -73,6 +66,48 @@ export default class App extends Component {
             }
         }
     }
+
+    // ЗАПУСК ИНТЕРВАЛА ДЛЯ ОДНОЙ КАРТЫ НА 5 СЕК
+
+    interval() {
+        let time = this.state.time;
+        if (this.state.time === 0) {
+            let timer = setInterval(() => {
+                time = time + 1;
+                this.setState({
+                    time
+                });
+                if (this.state.time >= 5 || !this.state.opened) {
+                    clearInterval(timer);
+                    this.setState({
+                        time: 0
+                    });
+                        if (this.state.openedCards.length === 1) {
+                            this.setState(({ finiteCard }) => {
+                                let newArr = finiteCard;
+                                newArr[
+                                    this.state.openedCards[0].index
+                                ].close = true;
+                                return {
+                                    finiteCard: newArr,
+                                    openedCards: [],
+                                    opened: false
+                                };
+                            });
+                        }
+                    }else{
+                    if (this.state.openedCards.length === 2) {
+                        clearInterval(timer);
+                        this.setState({
+                            time: 0
+                        });
+                    }
+                }
+            }, 1000);
+        }
+    }
+
+    //ПРОВЕРКА НА СХОЖЕСТЬ КАРТ
 
     check() {
         let finiteCard = this.state.finiteCard;
@@ -88,7 +123,9 @@ export default class App extends Component {
             this.setState({
                 finiteCard,
                 openedCards: [],
-                complitedCards
+                complitedCards,
+                opened: false,
+                time: 0
             });
             if (this.state.complitedCards.length === this.state.number.length) {
                 this.setState({
@@ -100,15 +137,19 @@ export default class App extends Component {
             finiteCard[this.state.openedCards[1].index].close = true;
             this.setState({
                 finiteCard,
-                openedCards: []
+                openedCards: [],
+                opened: false,
+                time: 0
             });
         }
     }
 
+    //ЗАПУСК ИГРЫ
+
     startGame() {
         let finiteCard = this.shuffle(
-            this.state.number.concat(this.state.number))
-            .map((number, index) => {
+            this.state.number.concat(this.state.number)
+        ).map((number, index) => {
             return {
                 number,
                 close: true,
@@ -130,6 +171,8 @@ export default class App extends Component {
 
         this.startGame();
     };
+
+    //ПЕРЕМЕШИВАНИЕ КАРТ В ФИНАЛЬНОМ МАССИВЕ
 
     shuffle(arr) {
         let randomIndex, temp;
@@ -155,6 +198,9 @@ export default class App extends Component {
                                 key={card.key}
                                 clickCard={() => {
                                     this.clickCard(card.number, index);
+                                }}
+                                interval={() => {
+                                    this.interval();
                                 }}
                             />
                         );

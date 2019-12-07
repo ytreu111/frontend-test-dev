@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# # dependencies
 /node_modules
 /.pnp
 .pnp.js
@@ -11,10 +11,10 @@
 #vs
 /.vscode
 
-#config 
-/config
-#script
+# config 
 /script
+# script
+/config
 # production
 /build
 

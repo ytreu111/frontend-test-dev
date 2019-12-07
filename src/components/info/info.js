@@ -13,9 +13,11 @@ export default class Info extends Component {
         time: 0
     };
 
+    // ЗАПУСК ТАЙМЕРА 
+
     interval = () => {
         let time = this.state.time;
-        var timer = setInterval(() => {
+        let timer = setInterval(() => {
             time = parseFloat(time + 0.1);
             this.setState({
                 time: time.toFixed(1)
@@ -59,14 +61,13 @@ export default class Info extends Component {
             <div className="info">
                 <div className="info__timer">
                     <span>Таймер:{`${min}.${sec}`}</span>
-                    {/* <span>{this.state.time}</span> */}
                 </div>
                 <button className="info__btn" onClick={this.interval}>
                     {this.props.game ? "Остановить Игру": "Начать Игру"}
                 </button>
                 <ol className="score">
-                    {this.state.score.map(person => {
-                        return <li>{`${person.name}, ${person.time}`}</li>;
+                    {this.state.score.map((person,index) => {
+                        return <li key={index}>{`${person.name}, ${person.time}`}</li>;
                     })}
                 </ol>
             </div>
