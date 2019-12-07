@@ -12,9 +12,9 @@
 /.vscode
 
 # config 
-/script
-# script
 /config
+# scripts
+/scripts
 # production
 /build
 
